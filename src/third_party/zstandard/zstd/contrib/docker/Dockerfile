@@ -1,13 +1,13 @@
 # Dockerfile
 # First image to build the binary
-FROM alpine as builder
+FROM alpine:3.18.3 as builder
 
 RUN apk --no-cache add make gcc libc-dev
 COPY . /src
 RUN mkdir /pkg && cd /src && make && make DESTDIR=/pkg install
 
 # Second minimal image to only keep the built binary
-FROM alpine
+FROM alpine:3.18.3
 
 # Copy the built files
 COPY --from=builder /pkg /
